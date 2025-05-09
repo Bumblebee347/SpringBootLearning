@@ -1,4 +1,4 @@
-package de.tobi.SpringBootLearning.Controller;
+package de.tobi.springbootlearning.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
