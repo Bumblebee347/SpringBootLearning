@@ -1,0 +1,23 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+###
+### GET Request
+GET http://localhost:8080/api/products
+
+
+### POST Request
+POST http://localhost:8080/api/products
+Content-Type: text/plain
+
+Product A
+
+### PUT Request
+PUT http://localhost:8080/api/products/1
+Content-Type: text/plain
+
+Updated Product A
+
+### DELETE Request
+DELETE http://localhost:8080/api/products/1
