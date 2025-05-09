@@ -19,6 +19,10 @@ public class ProductController {
         return "This is a product with the ID " + id;
     }
 
+
+    // ---- All the following methods are for creating, updating and deleting products ----
+    // ---------  To access them use a REST client, or use the API-Test.http file ---------
+
     //PostMapping to create a new product
     @PostMapping
     public String createProduct(@RequestBody String product) {
