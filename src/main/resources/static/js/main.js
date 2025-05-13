@@ -26,8 +26,8 @@ function getProduct() {
         document.getElementById('output').innerHTML = "Please enter a product ID";
         return;
     }
-
-    fetch('/api/products/' + productID)
+            //two versions for linking the productID to the string
+    fetch(/*'/api/products/' + productID*/ `/api/products/${productID}`)
         .then(response => response.text())
         .then(data => {
             document.getElementById('output').innerHTML = data;
