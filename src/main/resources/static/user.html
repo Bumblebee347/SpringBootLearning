@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <title>User Management</title>
+</head>
+    <body>
+        <h1>User Management</h1>
+
+        <h2>Create User</h2>
+        <input type="text" id="name" placeholder="Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="number" id="age" placeholder="Age">
+        <button onclick="createUser()">Create User</button>
+
+        <h2>Search User by ID</h2>
+        <input type="number" id="searchId" placeholder="User ID">
+        <button onclick="searchUserById()">Search by ID</button>
+        <button onclick="getAllUsers()">Get All Users</button>
+
+
+        <div id="output">
+            <p id="output_text"></p>
+            <table id="output_table" border="1" >
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>E-Mail</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            function createUser() {
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const age = document.getElementById("age").value;
+
+                fetch('/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({name, email, age})
+                })
+                    .then(response => response.json())
+                    .then(() => {
+                        getAllUsers();
+                    })
+                    .catch(err => {
+                        console.error("Error:", err)
+                        document.getElementById("output_text").innerHTML = "Error while creating user.";
+                    });
+            }
+
+            function getAllUsers(){
+                fetch('/api/users')
+                    .then(response => response.json())
+                    .then(users => {
+                        const tableBody = document.querySelector('#output_table tbody');
+                        tableBody.innerHTML = '';
+
+                        users.forEach(user => {
+                            const row = `
+                            <tr>
+                                <td>${user.id}</td>
+                                <td>${user.name}</td>
+                                <td>${user.email}</td>
+                                <td>${user.age}</td>
+                            </tr>
+                        `;
+                            tableBody.innerHTML += row;
+                        })
+                    })
+                    .catch(err => {
+                        console.error("Error:", err)
+                        document.getElementById("output_text").innerHTML = "Error while getting users.";
+                    })
+            }
+
+            function searchUserById() {
+                const id = document.getElementById("searchId").value;
+
+                fetch('/api/users/' + id)
+                    .then(response => response.json())
+                    .then(user => {
+                        const tableBody = document.querySelector('#output_table tbody');
+                        tableBody.innerHTML = '';
+
+                        const row = `
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.age}</td>
+                        </tr>
+                        `;
+                        tableBody.innerHTML += row;
+
+                    })
+                    .catch(err => {
+                        console.error("Error:", err)
+                        document.getElementById("output_text").innerHTML = "No user with ID " + id + " found.";
+                    });
+            }
+
+            window.onload = getAllUsers();
+        </script>
+    </body>
+</html>

@@ -4,3 +4,19 @@ body {
     background-color: indigo;
     color: white;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: rgba(244, 244, 244, 0.22);
+}
