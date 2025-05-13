@@ -19,12 +19,13 @@ public class UserController {
     }
 
     //---- real controller
-
+    //http://localhost:8080/api/users
     @GetMapping
     public List<User> getUsers() {
         return users;
     }
 
+    // http://localhost:8080/api/users/1
     @GetMapping("/{id}")
     public User getUserByID(@PathVariable Long id){
         return users.stream()
@@ -33,6 +34,9 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("User with ID " + id + " not found")); //Besser eine eigene Exception schreiben als eine allgemeine Runtime
     }
 
+
+    //To test POST use a REST client, then add a user to the "database" (list) and then use the GET request to show the new user
+    //Or use the HTML site to do it. (Not yet implemented)
     @PostMapping
     public User createUser(@RequestBody User user){
         user.setId(users.size() + 1L);
@@ -40,6 +44,28 @@ public class UserController {
         return user;
     }
 
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser){
+        for (User user : users) {
+            if (user.getId().equals(id)) {
+                user.setName(updatedUser.getName());
+                user.setEmail(updatedUser.getEmail());
+                user.setAge(updatedUser.getAge());
+                return user;
+            }
+        }
+        throw new RuntimeException("User with ID " + id + " not found"); //Later own exception!
+    }
 
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id){
+        for (User user : users) {
+            if (user.getId().equals(id)) {
+                users.remove(user);
+                return "User with ID " + id + " deleted";
+            }
+        }
+        throw new RuntimeException("User with ID " + id + " not found"); //Own exception is better
+    }
 
 }
